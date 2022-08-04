@@ -28,18 +28,19 @@
             "playbook_file": "jenkins.yml"
          
         },
+        
         {
             "type": "shell",
             "inline": [
                 "cat ~/.ssh/erim_aws.pub >> ~/.ssh/authorized_keys"
                       ]
         },
+        
         {
             "type": "shell",
             "inline": [
                 "sudo apt-get install python3-pip -y"
                       ]
-        }
         }
 
     ],
