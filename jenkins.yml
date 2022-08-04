@@ -1,15 +1,51 @@
 ---
 - name: Install Jenkins 
   hosts: all
-  become: yes
+  become: true
+
+  pre_tasks:
+
+    - name: Pause for 2 minutes to build app cache
+      pause:
+       minutes: 2
+# sudo killall apt apt-get
+
+    - name: Update all packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        force: yes
+
+ 
+    - name: apt-get update
+      command: apt-get update
+
+    - name:  apt upgrade -y
+      command: apt upgrade -y
+
+
+    - name: Install curl
+      command: apt-get install curl
+
+    - name: Install apt-utils
+      command: apt-get -y install apt-utils
+      
+     
+
   vars:
     ssh_use_pam: true # to allow access with our key on ec2
     jenkins_hostname: localhost
     ansible_remote_tmp: /tmp/ansible
-    jenkins_plugins: [ansicolor]
+    jenkins_plugins: [ansicolor] 
+    java_packages:
+      - openjdk-11-jdk
+
 
   roles:
     - geerlingguy.java
     - geerlingguy.jenkins
-    - geerlingguy.packer
     - geerlingguy.ansible
+    - geerlingguy.packer
+
+   # https://stackoverflow.com/questions/68795165/how-to-put-pause-between-ansible-roles
+   # https://phoenixnap.com/kb/fix-sub-process-usr-bin-dpkg-returned-error-code-1
